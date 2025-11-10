@@ -18,7 +18,7 @@ public class PainelEntradaController {
     private Button adicionarButton;
 
     @FXML
-    private ComboBox<IScheduler> algoritmoComboBox;
+    private ComboBox<String> algoritmoComboBox;
     // TODO como salvar o algoritmo escolihod como variavel global
     /**
      * Este método é chamado quando o botão "Adicionar Processo" é clicado,
@@ -28,7 +28,7 @@ public class PainelEntradaController {
     protected void handleAdicionarProcesso(ActionEvent event) {
         String tempoChegada = chegadaTextField.getText();
         String tempoExecucao = execucaoTextField.getText();
-        String algoritmoSelecionado = algoritmoComboBox.getValue().toString();
+        String algoritmoSelecionado = algoritmoComboBox.getValue();
 
         // instancia um obj PCB
 

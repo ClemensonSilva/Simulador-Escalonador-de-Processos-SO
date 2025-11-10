@@ -1,4 +1,6 @@
 package com.example.processSimulator.model.process;
+import com.example.processSimulator.model.process.Schedulers.IScheduler;
+
 import java.util.Objects;
 
 /**
@@ -21,26 +23,30 @@ public class PCB {
     private long completionTime;
     private long turnAround;
     private long priority;
+    private IScheduler schedulerAlg;
 
-    public PCB(long pid, long burstTime) {
+    public PCB(long pid, long burstTime, IScheduler schedulerAlg, long arrivalTime) {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
-        this.arrivalTime = System.currentTimeMillis();
         this.waitingTime = 0;
         this.completionTime = 0;
         this.turnAround = 0;
         this.priority = 0;
+        this.schedulerAlg = schedulerAlg;
+        this.arrivalTime = arrivalTime;
     }
 
 
-    public PCB(long pid, long burstTime, long priority) {
+    public PCB(long pid, long burstTime, long priority, IScheduler schedulerAlg, long arrivalTime ) {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
-        this.arrivalTime = System.currentTimeMillis();
         this.priority = priority;
+        this.schedulerAlg = schedulerAlg;
+        this.arrivalTime = arrivalTime;
     }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

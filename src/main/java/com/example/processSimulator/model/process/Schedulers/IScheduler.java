@@ -1,11 +1,14 @@
 package com.example.processSimulator.model.process.Schedulers;
 
+import com.example.processSimulator.model.process.PCB;
+
 import java.util.List;
 
 public interface IScheduler {
-    public void addProcess(Process process);
-    public Process nextProcess();
-    public List<Process> getReadyList();
+    public void addProcess(PCB pcb);
+    public PCB nextPCB();
+    public List<PCB> getReadyList();
+    public List<PCB> getFinishedList();
     public boolean isEmpty();
-
+    public PCB finishProcess();
 }
