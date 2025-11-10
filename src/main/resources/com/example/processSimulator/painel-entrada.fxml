@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_LEFT" spacing="15" styleClass="panel" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.processSimulator.controller.PainelEntradaController">
+
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <children>
+
+        <Label styleClass="h3" text="Painel de Entrada de Processos CPU Bounded" />
+
+        <VBox spacing="10">
+            <children>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Label minWidth="120" text="Tempo de Execução:" />
+                        <TextField fx:id="execucaoTextField" promptText="Ex: 5" styleClass="form-control" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Label minWidth="120" text="Prioridade:" />
+                        <TextField fx:id="prioridadeTextField" promptText="Ex: 1 (opcional)" styleClass="form-control" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Label minWidth="120" text="Algoritmo:" />
+                        <ComboBox fx:id="algoritmoComboBox" minWidth="170" promptText="Selecione o algoritmo" styleClass="form-control, primary">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="FIFO" />
+                                    <String fx:value="SJF (Shortest Job First)" />
+                                    <String fx:value="RR (Round Robin)" />
+                                    <String fx:value="PriorityScheduling" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Button fx:id="adicionarButton" maxWidth="150" onAction="#handleAdicionarProcesso" styleClass="btn, btn-primary" text="Adicionar Processo" />
+
+                <Button fx:id="carregarArquivoButton" maxWidth="150" onAction="#handleCarregarArquivo" styleClass="btn" text="Carregar Arquivo" />
+            </children>
+        </HBox>
+
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Button fx:id="iniciarSimulacaoButton" maxWidth="150" onAction="#handleIniciarSimulacao" styleClass="btn, btn-success" text="Iniciar simulação" />
+
+            </children>
+        </HBox>
+        <fx:include fx:id="tabelaProcessos" source="tabela-processos.fxml"  />
+
+    </children>
+</VBox>
