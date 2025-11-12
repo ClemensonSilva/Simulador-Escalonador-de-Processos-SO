@@ -41,7 +41,9 @@ public class PriorityScheduling implements IScheduler {
 
     @Override
     public PCB finishProcess() {
-        return priorityReadyQueue.remove();
+        PCB pcb = priorityReadyQueue.remove();
+        priorityFinishedList.add(pcb);
+        return pcb;
     }
 
 }
