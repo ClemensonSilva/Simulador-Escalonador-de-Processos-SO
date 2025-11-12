@@ -14,7 +14,7 @@ import java.util.Objects;
  *
  */
 
-public class PCB {
+public class PCB implements Comparable<PCB> {
     private long pid;
     private StatusProcess status;
     private long burstTime;
@@ -46,6 +46,8 @@ public class PCB {
         this.schedulerAlg = schedulerAlg;
         this.arrivalTime = arrivalTime;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -134,5 +136,9 @@ public class PCB {
     }
 
 
+    @Override
+    public int compareTo(PCB o) {
+        return Long.compare(this.priority, o.priority);
+    }
 }
 
