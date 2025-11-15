@@ -37,7 +37,6 @@ public class TabelaController implements Initializable {
     private TableColumn<PCB, Long> turnAroundColumn;
 
 
-
     public TableView<PCB> getProcessosTable(){
         return  processosTable;
     }
