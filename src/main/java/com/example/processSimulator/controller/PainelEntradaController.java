@@ -1,5 +1,7 @@
 package com.example.processSimulator.controller;
-import com.example.processSimulator.model.process.Schedulers.IScheduler;
+import com.example.processSimulator.model.PCB;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -9,30 +11,46 @@ import javafx.event.ActionEvent;
 public class PainelEntradaController {
 
     @FXML
-    private TextField chegadaTextField;
+    private TextField arrivalTimeTextField;
 
     @FXML
     private TextField execucaoTextField;
+    @FXML
+    private TextField pidTextField;
 
     @FXML
     private Button adicionarButton;
 
     @FXML
-    private ComboBox<String> algoritmoComboBox;
+    private TabelaController tabelaController;
+
+    private ObservableList<PCB> listaDeProcessos = FXCollections.observableArrayList();
+
+    @FXML
+    private ComboBox<String> algoritmoComboBox; // Elemento nao será mais necessário aqui, mas sera criado em outra tela ao clicar em iniciar simulacao
+
+    @FXML
+    private void initialize() {
+        if (tabelaController != null)
+            tabelaController.setProcessos(listaDeProcessos);
+    }
+
+
     // TODO como salvar o algoritmo escolihod como variavel global
     /**
      * Este método é chamado quando o botão "Adicionar Processo" é clicado,
      * conforme definido pelo onAction="#handleAdicionarProcesso" no FXML.
      */
+
     @FXML
     protected void handleAdicionarProcesso(ActionEvent event) {
-        String tempoChegada = chegadaTextField.getText();
+        String pid = pidTextField.getText();
+        String arrivalTime = arrivalTimeTextField.getText();
         String tempoExecucao = execucaoTextField.getText();
-        String algoritmoSelecionado = algoritmoComboBox.getValue();
 
-        // instancia um obj PCB
+        PCB pcb = new PCB(Long.parseLong(pid), Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime));
 
-        // metodo responsavel por adicionar o pcb criado na tabela que será criada dinamicamente cada vez q um novo processo é adicionado
+        listaDeProcessos.add(pcb);
 
     }
 
@@ -49,9 +67,6 @@ public class PainelEntradaController {
      * Opcional: Este método é chamado automaticamente após o FXML ser carregado.
      * Útil para configurações iniciais.
      */
-    @FXML
-    public void initialize() {
-    }
 
     /**
      * Método responsavel por disparar evento que criará segunda tela onde toda a animação do escalonamento será execultada.

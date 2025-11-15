@@ -11,7 +11,11 @@ module com.example.processSimulator {
 
     opens com.example.processSimulator.controller to javafx.fxml;
     exports com.example.processSimulator.controller;
+
     exports com.example.processSimulator.structures;
     opens com.example.processSimulator.structures to javafx.fxml;
+
+    opens com.example.processSimulator.model to javafx.fxml;
+    exports com.example.processSimulator.model;
 
 }

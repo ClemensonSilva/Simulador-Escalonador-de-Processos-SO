@@ -1,5 +1,5 @@
-package com.example.processSimulator.model.process;
-import com.example.processSimulator.model.process.Schedulers.IScheduler;
+package com.example.processSimulator.model;
+import com.example.processSimulator.model.Schedulers.IScheduler;
 
 import java.util.Objects;
 
@@ -25,7 +25,7 @@ public class PCB implements Comparable<PCB> {
     private long priority;
     private IScheduler schedulerAlg;
 
-    public PCB(long pid, long burstTime, IScheduler schedulerAlg, long arrivalTime) {
+    public PCB(long pid, long burstTime, long arrivalTime) {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
@@ -33,17 +33,15 @@ public class PCB implements Comparable<PCB> {
         this.completionTime = 0;
         this.turnAround = 0;
         this.priority = 0;
-        this.schedulerAlg = schedulerAlg;
         this.arrivalTime = arrivalTime;
     }
 
 
-    public PCB(long pid, long burstTime, long priority, IScheduler schedulerAlg, long arrivalTime ) {
+    public PCB(long pid, long burstTime, long priority, long arrivalTime ) {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.priority = priority;
-        this.schedulerAlg = schedulerAlg;
         this.arrivalTime = arrivalTime;
     }
 
@@ -73,6 +71,14 @@ public class PCB implements Comparable<PCB> {
                 ", turnAround=" + turnAround +
                 ", priority=" + priority +
                 '}';
+    }
+
+    public IScheduler getSchedulerAlg() {
+        return schedulerAlg;
+    }
+
+    public void setSchedulerAlg(IScheduler schedulerAlg) {
+        this.schedulerAlg = schedulerAlg;
     }
 
     public long getPriority() {

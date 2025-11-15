@@ -3,7 +3,7 @@ package com.example.processSimulator.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.collections.ObservableList;
-import com.example.processSimulator.model.process.PCB;
+import com.example.processSimulator.model.PCB;
 
 /**
  * Classe usada para apresentar os resultados obtidos na simulação. Nela tambem será implementado a funcionalidade de

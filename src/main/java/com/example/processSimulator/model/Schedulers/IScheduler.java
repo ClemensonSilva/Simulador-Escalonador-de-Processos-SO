@@ -1,6 +1,6 @@
-package com.example.processSimulator.model.process.Schedulers;
+package com.example.processSimulator.model.Schedulers;
 
-import com.example.processSimulator.model.process.PCB;
+import com.example.processSimulator.model.PCB;
 
 import java.util.List;
 

@@ -18,6 +18,12 @@
 
         <VBox spacing="10">
             <children>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Label minWidth="120" text="PID:" />
+                        <TextField fx:id="pidTextField" promptText="Ex: 5" styleClass="form-control" />
+                    </children>
+                </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>
@@ -30,6 +36,12 @@
                     <children>
                         <Label minWidth="120" text="Prioridade:" />
                         <TextField fx:id="prioridadeTextField" promptText="Ex: 1 (opcional)" styleClass="form-control" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <children>
+                        <Label minWidth="120" text="Arrival Time:" />
+                        <TextField fx:id="arrivalTimeTextField" promptText="Ex: 0 " styleClass="form-control" />
                     </children>
                 </HBox>
 
@@ -66,7 +78,7 @@
 
             </children>
         </HBox>
-        <fx:include fx:id="tabelaProcessos" source="tabela-processos.fxml"  />
+        <fx:include fx:id="tabela" source="tabela-processos.fxml"  />
 
     </children>
 </VBox>

@@ -1,4 +1,4 @@
-package com.example.processSimulator.model.process;
+package com.example.processSimulator.model;
 
 /**
  * Enum that represents the status of the process

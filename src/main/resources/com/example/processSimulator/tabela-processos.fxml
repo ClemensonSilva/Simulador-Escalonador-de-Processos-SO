@@ -13,48 +13,48 @@
         <Insets top="10" right="10" bottom="10" left="10" />
     </padding>
 
-<TableView  fx:id="processosTerminadosTable" styleClass="table, table-striped" prefHeight="600.0" prefWidth="800.0">
+<TableView  fx:id="processosTable" styleClass="table, table-striped" prefHeight="600.0" prefWidth="800.0">
     <columns>
 
-        <TableColumn text="PID">
+        <TableColumn fx:id="pidColumn" text="PID">
             <cellValueFactory>
-                <PropertyValueFactory property="pid" />
+                <PropertyValueFactory property="pidColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Status">
+        <TableColumn fx:id="statusColumn" text="Status">
             <cellValueFactory>
-                <PropertyValueFactory property="status" />
+                <PropertyValueFactory property="statusColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Burst (Execução)">
+        <TableColumn fx:id="burstTimeColumn" text="Burst Time">
             <cellValueFactory>
-                <PropertyValueFactory property="burstTime" />
+                <PropertyValueFactory property="burstTimeColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Chegada">
+        <TableColumn fx:id="arrivalTimeColumn" text="Arrival Time">
             <cellValueFactory>
-                <PropertyValueFactory property="arrivalTime" />
+                <PropertyValueFactory property="arrivalTimeColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Tempo de Espera">
+        <TableColumn fx:id="waitingTimeColumn" text="Waiting Time">
             <cellValueFactory>
-                <PropertyValueFactory property="waitingTime" />
+                <PropertyValueFactory property="waitingTimeColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Conclusão">
+        <TableColumn fx:id="completionTimeColumn" text="Completion Time">
             <cellValueFactory>
-                <PropertyValueFactory property="completionTime" />
+                <PropertyValueFactory property="completionTimeColumn" />
             </cellValueFactory>
         </TableColumn>
 
-        <TableColumn text="Turnaround">
+        <TableColumn fx:id="turnAroundColumn" text="Turnaround">
             <cellValueFactory>
-                <PropertyValueFactory property="turnAround" />
+                <PropertyValueFactory property="turnAroundColumn" />
             </cellValueFactory>
         </TableColumn>
 
