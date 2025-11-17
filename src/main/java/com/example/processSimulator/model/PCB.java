@@ -1,5 +1,5 @@
 package com.example.processSimulator.model;
-import com.example.processSimulator.model.Schedulers.IScheduler;
+import com.example.processSimulator.model.SchedulersAlg.IScheduler;
 
 import java.util.Objects;
 
@@ -21,6 +21,7 @@ public class PCB implements Comparable<PCB> {
     private long arrivalTime;
     private long waitingTime;
     private long completionTime;
+    private long remaingTime;
     private long turnAround;
     private long priority;
     private IScheduler schedulerAlg;
@@ -29,6 +30,7 @@ public class PCB implements Comparable<PCB> {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
+        this.remaingTime = burstTime;
         this.waitingTime = 0;
         this.completionTime = 0;
         this.turnAround = 0;
@@ -121,15 +123,31 @@ public class PCB implements Comparable<PCB> {
         this.arrivalTime = arrivalTime;
     }
 
+    public long getWaitingTime() {
+        return waitingTime;
+    }
+
+    public void setWaitingTime(long waitingTime) {
+        this.waitingTime = waitingTime;
+    }
+
+    public long getCompletionTime() {
+        return completionTime;
+    }
+
+    public void setCompletionTime(long completionTime) {
+        this.completionTime = completionTime;
+    }
+
     /**
      * The time spended in the queue with the ready state
      * @return
      */
-    public long getWaitingTime() {
+    public long ProcWaitingTime() {
         return this.turnAround - this.burstTime;
     }
 
-    public long getTurnAround() {
+    public long ProcgetTurnAround() {
         return this.completionTime - this.arrivalTime;
     }
 
@@ -137,7 +155,7 @@ public class PCB implements Comparable<PCB> {
      * used to calculate the  efficiency of a algorithm. It is the time used by the model.process to complete its task
      * @return
      */
-    public long getCompletionTime() {
+    public long ProcgetCompletionTime() {
         return this.arrivalTime+ this.waitingTime + this.burstTime;
     }
 
