@@ -48,15 +48,8 @@
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>
                         <Label minWidth="120" text="Algoritmo:" />
-                        <ComboBox fx:id="algoritmoComboBox" minWidth="170" promptText="Selecione o algoritmo" styleClass="form-control, primary">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="FIFO" />
-                                    <String fx:value="SJF (Shortest Job First)" />
-                                    <String fx:value="RR (Round Robin)" />
-                                    <String fx:value="PriorityScheduling" />
-                                </FXCollections>
-                            </items>
+                        <ComboBox fx:id="algoritmoComboBox" onAction="#handleEscolhaAlgoritmo" minWidth="170" promptText="Selecione o algoritmo" styleClass="form-control, primary">
+
                         </ComboBox>
                     </children>
                 </HBox>

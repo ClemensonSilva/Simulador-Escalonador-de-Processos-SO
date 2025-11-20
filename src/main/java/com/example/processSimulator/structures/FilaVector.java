@@ -2,6 +2,7 @@ package com.example.processSimulator.structures;
 import com.example.processSimulator.exceptions.FilaCheiaException;
 import com.example.processSimulator.exceptions.FilaVaziaException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class FilaVector<E>  implements Fila<E> {
 
     @Override
     public List<E> getAll() {
-        List<E> list = List.of();
+        List<E> list = new ArrayList<>();
         for (E element : array){
             list.add(element);
         }
@@ -51,13 +52,13 @@ public class FilaVector<E>  implements Fila<E> {
 
     public E front() throws FilaVaziaException {
         if (this.isEmpty())
-            throw new FilaVaziaException("A fila está vazia");
+            throw new FilaVaziaException();
         return array[head];
     }
 
     public E next() throws FilaVaziaException {
         if (this.size == 1)
-            throw new FilaVaziaException("Não há proximo elemento");
+            throw new FilaVaziaException();
         return array[head-1];
     }
 
@@ -72,7 +73,7 @@ public class FilaVector<E>  implements Fila<E> {
 
     public E dequeue() throws FilaVaziaException {
         if (this.isEmpty())
-            throw new FilaVaziaException("A fila está vazia");
+            throw new FilaVaziaException();
         E element = array[head % this.size];
         array[head % this.size] = null;
         this.head++;

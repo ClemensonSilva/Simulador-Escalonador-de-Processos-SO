@@ -53,7 +53,7 @@ public class SJF  implements IScheduler{
 
     @Override
     public PCB finishProcess() {
-        if(runningProcess == null) throw new FilaVaziaException();
+        if(SJFReadyQueue.isEmpty()) throw new FilaVaziaException();
         PCB pcb = getRunningProcess();
         pcb.setStatus(StatusProcess.TERMINATED);
         SJFFinishedQueue.add(pcb);

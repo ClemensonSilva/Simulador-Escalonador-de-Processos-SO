@@ -24,7 +24,6 @@ public class PCB implements Comparable<PCB> {
     private long remaingTime;
     private long turnAround;
     private long priority;
-    private IScheduler schedulerAlg;
 
     public PCB(long pid, long burstTime, long arrivalTime) {
         this.pid = pid;
@@ -75,12 +74,12 @@ public class PCB implements Comparable<PCB> {
                 '}';
     }
 
-    public IScheduler getSchedulerAlg() {
-        return schedulerAlg;
+    public long getRemaingTime() {
+        return remaingTime;
     }
 
-    public void setSchedulerAlg(IScheduler schedulerAlg) {
-        this.schedulerAlg = schedulerAlg;
+    public void setRemaingTime(long remaingTime) {
+        this.remaingTime = remaingTime;
     }
 
     public long getPriority() {
@@ -139,24 +138,28 @@ public class PCB implements Comparable<PCB> {
         this.completionTime = completionTime;
     }
 
+    public long getTurnAround() {
+        return turnAround;
+    }
+
     /**
      * The time spended in the queue with the ready state
      * @return
      */
-    public long ProcWaitingTime() {
-        return this.turnAround - this.burstTime;
+    public void ProcWaitingTime() {
+        this.waitingTime = this.turnAround - this.burstTime;
     }
 
-    public long ProcgetTurnAround() {
-        return this.completionTime - this.arrivalTime;
+    public void ProcgetTurnAround() {
+        this.turnAround =  this.completionTime - this.arrivalTime;
     }
 
     /**
      * used to calculate the  efficiency of a algorithm. It is the time used by the model.process to complete its task
      * @return
      */
-    public long ProcgetCompletionTime() {
-        return this.arrivalTime+ this.waitingTime + this.burstTime;
+    public void ProcgetCompletionTime() {
+        this.completionTime =  this.arrivalTime+ this.waitingTime + this.burstTime;
     }
 
 

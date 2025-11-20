@@ -26,4 +26,7 @@ public interface IScheduler {
      * @return  the set pcb or FilaVazia Exception if the queue is empty.
      */
     public PCB finishProcess();
+    public PCB getRunningProcess();
+    public void setRunningProcess(PCB pcb);
+
 }

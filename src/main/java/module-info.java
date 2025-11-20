@@ -4,6 +4,8 @@ module com.example.processSimulator {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires javafx.base;
+    requires javafx.graphics;
 
     opens com.example.processSimulator to javafx.fxml;
     exports com.example.processSimulator;

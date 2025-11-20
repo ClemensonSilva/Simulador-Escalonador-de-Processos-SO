@@ -1,13 +1,22 @@
 package com.example.processSimulator.controller;
+import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
+import com.example.processSimulator.model.SchedulersAlg.FCFS;
+import com.example.processSimulator.model.SchedulersAlg.IScheduler;
+import com.example.processSimulator.model.SchedulersAlg.PriorityScheduling;
+import com.example.processSimulator.model.SchedulersAlg.SJF;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +31,7 @@ public class PainelEntradaController {
 
     @FXML
     private TextField execucaoTextField;
+
     @FXML
     private TextField pidTextField;
 
@@ -31,10 +41,10 @@ public class PainelEntradaController {
     @FXML
     private TabelaController tabelaController;
 
-    private ObservableList<PCB> listaDeProcessos = FXCollections.observableArrayList();
+    private ObservableList<PCB> processList = FXCollections.observableArrayList();
 
     @FXML
-    private ComboBox<String> algoritmoComboBox; // Elemento nao será mais necessário aqui, mas sera criado em outra tela ao clicar em iniciar simulacao
+    private ComboBox<IScheduler> algoritmoComboBox;
 
     /**
      * Opcional: Este método é chamado automaticamente após o FXML ser carregado.
@@ -44,40 +54,74 @@ public class PainelEntradaController {
     @FXML
     private void initialize() {
 
+        setComboBox();
         if (tabelaController != null){
             tabelaController.getProcessosTable().setEditable(true);
-            tabelaController.setProcessos(listaDeProcessos);
+            tabelaController.setProcessos(processList);
+            tabelaController.getProcessosTable().setPlaceholder(new Label("Nenhum processo criado!"));
         }
-        else tabelaController.getProcessosTable().setPlaceholder(new Label("Nenhum processo criado!"));
+
     }
-
-
-    // TODO como salvar o algoritmo escolihod como variavel global
-    /**
-     * Este método é chamado quando o botão "Adicionar Processo" é clicado,
-     * conforme definido pelo onAction="#handleAdicionarProcesso" no FXML.
-     */
 
     @FXML
+    private  void setComboBox(){
+        algoritmoComboBox.getItems().addAll(new FCFS(), new PriorityScheduling(), new SJF());
+    }
+    private int pid = 0; // TODO melhoria: retirar essa linha daqui
+    @FXML
     protected void handleAdicionarProcesso(ActionEvent event) {
-        String pid = pidTextField.getText();
+
         String arrivalTime = arrivalTimeTextField.getText();
         String tempoExecucao = execucaoTextField.getText();
+        if(!arrivalTime.isBlank() || !tempoExecucao.isBlank()) {
+            pid += 1;
+            PCB pcb = new PCB(pid, Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime));
 
-        PCB pcb = new PCB(Long.parseLong(pid), Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime));
+            processList.add(pcb);
 
-        listaDeProcessos.add(pcb);
+            pidTextField.clear();
+            arrivalTimeTextField.clear();
+            execucaoTextField.clear();
+        }else
+            showAlert("Falha ao criar processo","Você deve preencher os campos para criar um processo!", Alert.AlertType.WARNING);
 
-        pidTextField.clear();
-        arrivalTimeTextField.clear();
-        execucaoTextField.clear();
     }
+
+    public void handleEscolhaAlgoritmo(ActionEvent event){
+         showAlert("Mudanca","ALGORITMO MODIFICADO PARA " + algoritmoComboBox.getValue(), Alert.AlertType.INFORMATION);
+    }
+
+
+    /**
+     * Método responsavel por disparar evento que criará segunda tela onde toda a animação do escalonamento será execultada.
+     * @param event
+     */
+    public void handleIniciarSimulacao(ActionEvent event) throws IOException {
+
+        if(!this.processList.isEmpty()){
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("painel-simulacao.fxml"));
+            Parent root = loader.load();
+            SimuladorController controller = loader.getController();
+            // passar lista de processos e algoritmo escolhido
+            controller.setSimulationParams(this.processList, this.algoritmoComboBox.getValue());
+            Scene scene = null;
+            scene = new Scene(root, 800, 600);
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+
+            HelloApplication.stage.setTitle("Simulação");
+            HelloApplication.stage.setScene(scene);
+            HelloApplication.stage.show();
+        }
+        else showAlert("Lista vazia", "Nenhum processo foi adicionado!", Alert.AlertType.ERROR);
+
+       }
 
     /**
      * Método usado para criar processos através da leitura de arquivo
      * @param event
      * Link para documentacao: https://jenkov.com/tutorials/javafx/filechooser.html
      */
+
     @FXML
     protected void handleCarregarArquivo(ActionEvent event){
 
@@ -88,12 +132,12 @@ public class PainelEntradaController {
         );
 
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        File arquivo = fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog(stage);
 
-        if (arquivo != null) {
+        if (file != null) {
             try {
                 List<PCB> novosProcessos;
-                novosProcessos = Files.lines(arquivo.toPath())
+                novosProcessos = Files.lines(file.toPath())
                         .map(linha -> linha.split(","))
                         .map(dados -> {
                             long pid = Long.parseLong(dados[0].trim());
@@ -102,33 +146,22 @@ public class PainelEntradaController {
                             return new PCB(pid, burstTime, arrivalTime);
                         })
                         .collect(Collectors.toList());
-
-                listaDeProcessos.addAll(novosProcessos);
+                processList.addAll(novosProcessos);
 
             } catch (IOException e) {
-                mostrarAlerta("Erro de Leitura", "Não foi possível ler o arquivo: " + e.getMessage());
+                showAlert("Erro de Leitura", "Não foi possível ler o arquivo: " + e.getMessage(), Alert.AlertType.INFORMATION);
             } catch (Exception e) {
                 // Pega erros de formato (ex: NumberFormatException ou linha mal formatada)
-                mostrarAlerta("Erro de Formato", "O arquivo está mal formatado. " + e.getMessage());
+                showAlert("Erro de Formato", "O arquivo está mal formatado. " + e.getMessage(), Alert.AlertType.INFORMATION);
             }
         }
-
-
     }
 
-
-    /**
-     * Método responsavel por disparar evento que criará segunda tela onde toda a animação do escalonamento será execultada.
-     * @param event
-     */
-    public void handleIniciarSimulacao(ActionEvent event) {
-    }
-
-    private void mostrarAlerta(String titulo, String mensagem) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titulo);
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(mensagem);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }
