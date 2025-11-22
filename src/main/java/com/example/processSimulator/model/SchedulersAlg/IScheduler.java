@@ -12,7 +12,7 @@ public interface IScheduler {
     public void addProcess(PCB pcb);
 
     /**
-     * Used in the simulation to send the pcb that is current running;
+     * Used in the simulation to setthe pcb that is current running;
      * Remove the head of the queue and set the Running attribute to be it.
      * @return The next pcb inside the ready queue to be put on the Running attribute or FilaVazia Exception if the queue is empty
      */
@@ -28,5 +28,4 @@ public interface IScheduler {
     public PCB finishProcess();
     public PCB getRunningProcess();
     public void setRunningProcess(PCB pcb);
-
 }

@@ -13,10 +13,10 @@ public class FCFS implements IScheduler {
     private Fila<PCB> readyQueue;
     private Fila<PCB> finishedQueue;
     private PCB runningProcess;
-
+    // TODO corrigir para que o tamnho seja igual ao numero de processos
     public FCFS() {
-        this.readyQueue = new FilaVector<>(25);
-        this.finishedQueue = new FilaVector<>(25);
+        this.readyQueue = new FilaVector<>(100);
+        this.finishedQueue = new FilaVector<>(100);
         this.name = "FCFS";
         this.runningProcess = null;
     }
@@ -31,7 +31,7 @@ public class FCFS implements IScheduler {
     public PCB nextPCB() {
         if(readyQueue.isEmpty()) throw new FilaVaziaException();;
         setRunningProcess(readyQueue.dequeue());
-        this.runningProcess.setStatus(StatusProcess.READY);
+        this.runningProcess.setStatus(StatusProcess.RUNNING);
         return  getRunningProcess();
     }
 
@@ -55,7 +55,7 @@ public class FCFS implements IScheduler {
         if(runningProcess == null) throw new FilaVaziaException();
         PCB pcb = getRunningProcess();
         pcb.setStatus(StatusProcess.TERMINATED);
-        readyQueue.enqueue(pcb);
+        finishedQueue.enqueue(pcb);
         return pcb;
     }
 

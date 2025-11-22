@@ -32,7 +32,7 @@ public class SJF  implements IScheduler{
     public PCB nextPCB() {
         if(SJFReadyQueue.isEmpty()) throw new FilaVaziaException();;
         setRunningProcess(SJFReadyQueue.remove());
-        this.runningProcess.setStatus(StatusProcess.READY);
+        this.runningProcess.setStatus(StatusProcess.RUNNING);
         return  getRunningProcess();
     }
 
@@ -53,7 +53,7 @@ public class SJF  implements IScheduler{
 
     @Override
     public PCB finishProcess() {
-        if(SJFReadyQueue.isEmpty()) throw new FilaVaziaException();
+        if(runningProcess == null) throw new FilaVaziaException();
         PCB pcb = getRunningProcess();
         pcb.setStatus(StatusProcess.TERMINATED);
         SJFFinishedQueue.add(pcb);

@@ -16,7 +16,6 @@ public class PriorityScheduling implements IScheduler {
         this.priorityReadyQueue = new PriorityQueue<>(Comparator.comparingLong(PCB::getPriority));
         this.priorityFinishedList = new ArrayList<>();
         this.name = "Priority Schedulling";
-        this.name = null;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class PriorityScheduling implements IScheduler {
         if(runningProcess == null) throw new FilaVaziaException();
         PCB pcb = getRunningProcess();
         pcb.setStatus(StatusProcess.TERMINATED);
-        priorityReadyQueue.add(pcb);
+        priorityFinishedList.add(pcb);
         return pcb ;
     }
     @Override

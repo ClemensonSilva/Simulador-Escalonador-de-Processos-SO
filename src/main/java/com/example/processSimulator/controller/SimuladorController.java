@@ -44,7 +44,7 @@ public class SimuladorController implements Initializable {
     private ObservableList<PCB> listaDeProcessos = FXCollections.observableArrayList();
     private IScheduler algoritm;
     private int clock ;
-
+    private  long sizeListProcess;
     private Timeline simulationTimeline;
     private boolean isRunning = false;
     private Map<Long, Node> processVisualNodes = new HashMap<>(); // Mapeia PID -> Node
@@ -64,7 +64,7 @@ public class SimuladorController implements Initializable {
         this.algoritm = algoritm;
         statusSimulacaoLabel.setText(algoritm.toString());
         this.clock = 0;
-
+        this.sizeListProcess = processos.size();
     }
 
     public void onStartClick(ActionEvent event) {
@@ -76,7 +76,7 @@ public class SimuladorController implements Initializable {
         } else {
             simulationTimeline.play();
             startButton.setText("Pause");
-            statusSimulacaoLabel.setText("Status simulação: RUNNING");
+            statusSimulacaoLabel.setText(" " + algoritm.getFinishedList().size() + "  e " + sizeListProcess);
             isRunning = true;
         }
     }
@@ -93,6 +93,7 @@ public class SimuladorController implements Initializable {
         }
         HelloApplication.painelEntrada();
     }
+
     private void runSingleTick() {
         PCB runningProcess;
         this.isRunning = true;
@@ -112,7 +113,6 @@ public class SimuladorController implements Initializable {
                 PCB p = algoritm.getRunningProcess();
                 p.setRemaingTime(p.getRemaingTime() - 1);
 
-                // TODO: Atualizar a UI do processo em execução (ex: um label de tempo)
 
                 // Verificar se o processo terminou
                 if (p.getRemaingTime() == 0) {
@@ -126,24 +126,19 @@ public class SimuladorController implements Initializable {
                     algoritm.setRunningProcess(null);
                 }
         }
+
         if(algoritm.getRunningProcess() == null && !algoritm.isEmpty()) {
             runningProcess = algoritm.nextPCB();
             if(algoritm.getRunningProcess()!= null) animateToRunning(runningProcess);
         }
-
+        if(isSimulationFinished()) simulationTimeline.stop();
         clock++;
         clockLabel.setText(String.valueOf(clock));
     }
 
-
-
-        // pega o head da ready queue
-        // usa a animacao para Ready na head da lista de processos
-        // decrementa do remain time do processo
-        // atualiza a ordem da Hbox com a queue de pcb Ready -> verifica se o ArrivalTime dos processos sao iguais ao clock
-        // verifica se o remain time do pcb running é igual a zero, se for realiza animacao para finish queue e volta para o primeiro passso
-
-
+    private boolean isSimulationFinished() {
+        return algoritm.getFinishedList().size() == sizeListProcess;
+    }
 
     private void animateToRunning(PCB process) {
         Node processNode = processVisualNodes.get(process.getPid());
@@ -174,6 +169,8 @@ public class SimuladorController implements Initializable {
             processNode.setLayoutX((runningProcessContainer.getWidth() - processNode.getBoundsInLocal().getWidth()) / 2);
             processNode.setLayoutY((runningProcessContainer.getHeight() - processNode.getBoundsInLocal().getHeight()) / 2);
         });
+        if(algoritm.isEmpty() && algoritm.getRunningProcess() == null) simulationTimeline.stop();
+
         transition.play();
     }
 
@@ -206,6 +203,8 @@ public class SimuladorController implements Initializable {
             processNode.setLayoutX(0);
             processNode.setLayoutY(0);
         });
+
+
         transition.play();
     }
 

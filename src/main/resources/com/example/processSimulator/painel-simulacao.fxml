@@ -48,7 +48,7 @@
             <Label  fx:id="statusSimulacaoLabel"></Label>
             <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartClick" prefWidth="80.0" text="Start" />
             <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onResetClick" prefWidth="80.0" text="Reset" />
-            <Button fx:id="returnButton" mnemonicParsing="false" onAction="#onReturnClick" prefWidth="80.0" text="Reset" />
+            <Button fx:id="returnButton" mnemonicParsing="false" onAction="#onReturnClick" prefWidth="80.0" text="Return" />
 
         </children>
     </HBox>
