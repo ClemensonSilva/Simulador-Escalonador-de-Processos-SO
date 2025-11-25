@@ -1,4 +1,4 @@
-package com.example.processSimulator.model.SchedulersAlg;
+package com.example.processSimulator.model.schedulersAlg;
 
 import com.example.processSimulator.exceptions.FilaVaziaException;
 import com.example.processSimulator.model.PCB;
@@ -16,7 +16,7 @@ public class SJF  implements IScheduler{
     private PCB runningProcess;
 
     public SJF() {
-        this.SJFReadyQueue = new PriorityQueue<>(Comparator.comparingLong(PCB::getBurstTime));
+        this.SJFReadyQueue = new PriorityQueue<>(Comparator.comparingLong(PCB::getBurstTime).thenComparing(PCB::getArrivalTime));
         this.SJFFinishedQueue = new ArrayList<>();
         this.name = "Shortest Job First";
         this.runningProcess = null;

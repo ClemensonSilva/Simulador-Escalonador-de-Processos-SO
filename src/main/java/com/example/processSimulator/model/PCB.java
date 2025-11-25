@@ -1,5 +1,4 @@
 package com.example.processSimulator.model;
-import com.example.processSimulator.model.SchedulersAlg.IScheduler;
 
 import java.util.Objects;
 
@@ -38,14 +37,13 @@ public class PCB implements Comparable<PCB> {
     }
 
 
-    public PCB(long pid, long burstTime, long priority, long arrivalTime ) {
+    public PCB(long pid, long burstTime,  long arrivalTime, long priority ) {
         this.pid = pid;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
     }
-
 
 
     @Override

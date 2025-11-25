@@ -2,7 +2,7 @@ package com.example.processSimulator.controller;
 
 import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
-import com.example.processSimulator.model.SchedulersAlg.IScheduler;
+import com.example.processSimulator.model.schedulersAlg.IScheduler;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.TranslateTransition;
@@ -10,9 +10,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +23,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +58,15 @@ public class SimuladorController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         clockLabel.setText("0");
         simulationTimeline = new Timeline(
-                new KeyFrame(Duration.millis(1000), e -> runSingleTick())
+                new KeyFrame(Duration.millis(1000), e -> {
+                    try {
+                        runSingleTick();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
         );
-        simulationTimeline.setCycleCount(Timeline.INDEFINITE); // TODO mudar para que a simulacao acabe ao finalizar os processos da lista
-
+        simulationTimeline.setCycleCount(Timeline.INDEFINITE);
     }
 
     public void setSimulationParams(ObservableList<PCB> processos, IScheduler algoritm){
@@ -94,7 +104,7 @@ public class SimuladorController implements Initializable {
         HelloApplication.painelEntrada();
     }
 
-    private void runSingleTick() {
+    private void runSingleTick() throws IOException {
         PCB runningProcess;
         this.isRunning = true;
         // cria lista Node  do Ready container
@@ -113,7 +123,6 @@ public class SimuladorController implements Initializable {
                 PCB p = algoritm.getRunningProcess();
                 p.setRemaingTime(p.getRemaingTime() - 1);
 
-
                 // Verificar se o processo terminou
                 if (p.getRemaingTime() == 0) {
                     p.setCompletionTime(clock);
@@ -131,7 +140,22 @@ public class SimuladorController implements Initializable {
             runningProcess = algoritm.nextPCB();
             if(algoritm.getRunningProcess()!= null) animateToRunning(runningProcess);
         }
-        if(isSimulationFinished()) simulationTimeline.stop();
+
+        if(isSimulationFinished()){
+            simulationTimeline.stop();
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("painel-resultados.fxml"));
+            Parent root = loader.load();
+            ResultadosController resultadosController = loader.getController();
+            resultadosController.setResultsController(algoritm);
+            Scene scene = null;
+            scene = new Scene(root, 800, 600);
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+
+            HelloApplication.stage.setTitle("Resultados");
+            HelloApplication.stage.setScene(scene);
+            HelloApplication.stage.show();
+        }
+
         clock++;
         clockLabel.setText(String.valueOf(clock));
     }

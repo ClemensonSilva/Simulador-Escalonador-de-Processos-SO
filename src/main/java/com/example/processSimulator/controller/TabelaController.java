@@ -50,6 +50,14 @@ public class TabelaController implements Initializable {
         waitingTimeColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTime"));
         completionTimeColumn.setCellValueFactory(new PropertyValueFactory<>("completionTime"));
         turnAroundColumn.setCellValueFactory(new PropertyValueFactory<>("turnAround"));
+
+        pidColumn.setSortable(false);
+        statusColumn.setSortable(false);
+        burstTimeColumn.setSortable(false);
+        arrivalTimeColumn.setSortable(false);
+        waitingTimeColumn.setSortable(false);
+        completionTimeColumn.setSortable(false);
+        turnAroundColumn.setSortable(false);
     }
     public void setProcessos(ObservableList<PCB> lista) {
         processosTable.setItems(lista);

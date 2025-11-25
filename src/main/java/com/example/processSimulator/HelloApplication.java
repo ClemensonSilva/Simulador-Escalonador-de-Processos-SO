@@ -3,6 +3,7 @@ package com.example.processSimulator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
@@ -61,5 +62,13 @@ public class HelloApplication extends Application {
 
     public static void painelEntrada() {
         carregarCena("Painel Entrada", "painel-entrada.fxml");
+    }
+
+    public static void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

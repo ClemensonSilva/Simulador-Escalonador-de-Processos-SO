@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" styleClass="panel" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.processSimulator.controller.ResultadosController">
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<VBox spacing="15" styleClass="panel" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.processSimulator.controller.ResultadosController">
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10" />
+        <Insets top="20" right="20" bottom="20" left="20" />
     </padding>
 
     <children>
         <Label text="Resultados da Simulação" styleClass="h3" />
 
-        <fx:include fx:id="tabelaProcessos" source="tabela-processos.fxml"  />
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <children>
+                <Label text="Buscar PID:" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="campoBuscaPid" promptText="Ex: 1" prefWidth="100" />
+
+                <Separator orientation="VERTICAL" />
+                <ComboBox fx:id="ordenacaoComboBox" promptText="Ordenar por " onAction="#handleOrdenar" styleClass="form-control, primary" >
+                </ComboBox>
+
+
+                <Button text="Tela Incial" onAction="#handleRetornarInicio" styleClass="btn-info" />
+            </children>
+        </HBox>
+
+        <fx:include fx:id="tabela" source="tabela-processos.fxml" VBox.vgrow="ALWAYS" />
 
     </children>
 

@@ -1,10 +1,10 @@
 package com.example.processSimulator.controller;
 import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
-import com.example.processSimulator.model.SchedulersAlg.FCFS;
-import com.example.processSimulator.model.SchedulersAlg.IScheduler;
-import com.example.processSimulator.model.SchedulersAlg.PriorityScheduling;
-import com.example.processSimulator.model.SchedulersAlg.SJF;
+import com.example.processSimulator.model.schedulersAlg.FCFS;
+import com.example.processSimulator.model.schedulersAlg.IScheduler;
+import com.example.processSimulator.model.schedulersAlg.PriorityScheduling;
+import com.example.processSimulator.model.schedulersAlg.SJF;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,9 +45,12 @@ public class PainelEntradaController {
 
     @FXML
     private ComboBox<IScheduler> algoritmoComboBox;
+    // TODO adicionar campo priority
 
     /**
-     * Opcional: Este método é chamado automaticamente após o FXML ser carregado.
+     * Opcional: Este método é chamado automaticamente após o FXML ser
+     *
+     * carregado.
      * Útil para configurações iniciais.
      */
 
@@ -104,6 +107,7 @@ public class PainelEntradaController {
             SimuladorController controller = loader.getController();
             // passar lista de processos e algoritmo escolhido
             controller.setSimulationParams(this.processList, this.algoritmoComboBox.getValue());
+
             Scene scene = null;
             scene = new Scene(root, 800, 600);
             scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
@@ -140,10 +144,10 @@ public class PainelEntradaController {
                 novosProcessos = Files.lines(file.toPath())
                         .map(linha -> linha.split(","))
                         .map(dados -> {
-                            long pid = Long.parseLong(dados[0].trim());
-                            long burstTime = Long.parseLong(dados[1].trim());
-                            long arrivalTime = Long.parseLong(dados[2].trim());
-                            return new PCB(pid, burstTime, arrivalTime);
+                            long burstTime = Long.parseLong(dados[0].trim());
+                            long arrivalTime = Long.parseLong(dados[1].trim());
+                            this.pid++;
+                            return new PCB(this.pid, burstTime, arrivalTime);
                         })
                         .collect(Collectors.toList());
                 processList.addAll(novosProcessos);

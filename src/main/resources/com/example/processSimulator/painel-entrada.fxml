@@ -20,13 +20,6 @@
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>
-                        <Label minWidth="120" text="PID:" />
-                        <TextField fx:id="pidTextField" promptText="Ex: 5" styleClass="form-control" />
-                    </children>
-                </HBox>
-
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <children>
                         <Label minWidth="120" text="Tempo de Execução:" />
                         <TextField fx:id="execucaoTextField" promptText="Ex: 5" styleClass="form-control" />
                     </children>

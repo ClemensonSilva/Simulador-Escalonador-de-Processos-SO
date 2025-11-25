@@ -1,4 +1,4 @@
-package com.example.processSimulator.model.SchedulersAlg;
+package com.example.processSimulator.model.schedulersAlg;
 
 import com.example.processSimulator.model.PCB;
 
