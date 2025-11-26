@@ -60,6 +60,8 @@
                 <Button fx:id="adicionarButton" maxWidth="150" onAction="#handleAdicionarProcesso" styleClass="btn, btn-primary" text="Adicionar Processo" />
 
                 <Button fx:id="carregarArquivoButton" maxWidth="150" onAction="#handleCarregarArquivo" styleClass="btn" text="Carregar Arquivo" />
+                <Button fx:id="cleanTable" maxWidth="150" onAction="#handleCleanTable" styleClass="btn, btn-danger" text="Limpar tabela" />
+
             </children>
         </HBox>
 

@@ -28,7 +28,6 @@ public class PCB implements Comparable<PCB> {
 
     public PCB(long pid, long burstTime, long arrivalTime) {
         this.pid = pid;
-        this.quantumConst = quantum;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.remaingTime = burstTime;
@@ -37,24 +36,22 @@ public class PCB implements Comparable<PCB> {
         this.turnAround = 0;
         this.priority = 0;
         this.arrivalTime = arrivalTime;
-        this.quantum = 0;
-    }
+        this.quantum = quantum;
+        this.quantumConst = quantum    ;    }
 
 
     public PCB(long pid, long burstTime, long arrivalTime, long priority) {
         this.pid = pid;
-        this.quantumConst = quantum;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
         this.remaingTime = burstTime;
-        this.quantum = 0;
-    }
+        this.quantum = quantum;
+        this.quantumConst = quantum    ;}
 
     public PCB(long pid, long burstTime, long arrivalTime, long quantum, long priority) {
         this.pid = pid;
-        this.quantumConst = quantum;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.remaingTime = burstTime;
@@ -65,7 +62,7 @@ public class PCB implements Comparable<PCB> {
         this.arrivalTime = arrivalTime;
         this.priority = 0;
         this.quantum = quantum;
-    }
+        this.quantumConst = quantum    ;    }
 
     @Override
     public boolean equals(Object o) {

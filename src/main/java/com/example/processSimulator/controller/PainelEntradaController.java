@@ -159,16 +159,20 @@ public class PainelEntradaController {
 
         // TODO refatorar, DRY
         String quantum;
-
+        quantum = "0";
         if(algoritmoComboBox.getValue() instanceof RoundRobin) {
-            quantum = quantumTextField.getText();
-        } else {
-            quantum = "0";
+            if(!quantumTextField.getText().isBlank()) quantum = quantumTextField.getText() ;
+            else{
+                tabelaController.getProcessosTable().getItems().clear();
+                HelloApplication.showAlert("Quantum", "Defina o quantum para o processo", Alert.AlertType.ERROR);
+                return;
+            }
         }
 
         if (file != null) {
             try {
                 List<PCB> novosProcessos;
+                String finalQuantum = quantum;
                 novosProcessos = Files.lines(file.toPath())
                         .map(linha -> linha.split(","))
                         .map(dados -> {
@@ -179,7 +183,7 @@ public class PainelEntradaController {
                                  priority = Long.parseLong(dados[2].trim());
                             }
                             this.pid++;
-                            return new PCB(this.pid, burstTime, arrivalTime, Long.parseLong(quantum),priority);
+                            return new PCB(this.pid, burstTime, arrivalTime, Long.parseLong(finalQuantum),priority);
                         })
                         .collect(Collectors.toList());
                 processList.addAll(novosProcessos);
@@ -199,5 +203,9 @@ public class PainelEntradaController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void handleCleanTable(ActionEvent event) {
+        processList.clear();
     }
 }

@@ -49,7 +49,7 @@ public class RoundRobin implements IScheduler {
 
         preempted.setQuantum(preempted.getQuantumConst());
 
-        roundReadyQueue.add(preempted);
+        roundReadyQueue.add(preempted); // Vai para o fim da fila
         this.runningProcess = null;
 
         return preempted;

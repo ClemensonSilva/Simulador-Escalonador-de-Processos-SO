@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import com.example.processSimulator.model.PCB;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -28,7 +29,7 @@ public class ResultadosController implements Initializable {
     private TabelaController tabelaController;
     @FXML private ComboBox<OrdenationCriteria> ordenacaoComboBox;
     @FXML private TextField campoBuscaPid;
-    @FXML private TextField averageTimeTextField;
+    @FXML private Label averageWaitingLabel;
 
     private ObservableList<PCB> processList = FXCollections.observableArrayList();
     private IScheduler algorithm;
@@ -48,22 +49,24 @@ public class ResultadosController implements Initializable {
 
     }
 
+    public void setAverageWaitingLabel() {
+        double average = 0;
+        for (PCB pcb: algorithm.getFinishedList()){
+            average+= pcb.getWaitingTime();
+        }
+       average =  average/algorithm.getFinishedList().size();
+        this.averageWaitingLabel.setText("Tempo médio de Espera: " + average);
+    }
+
     public void setResultsController(IScheduler algorithm) {
         this.algorithm = algorithm;
         this.setProcessList();
+        setAverageWaitingLabel();
 
-    }
-    public void setAverageTimeTextField() {
-        long average = 0;
-        for (PCB processo : algorithm.getFinishedList()) {
-
-        }
     }
 
     public void setProcessList(){
-        for (PCB  processo: algorithm.getFinishedList()){
-            processList.add(processo);
-        }
+        processList.setAll(algorithm.getFinishedList());
     }
     public void setOrdenacaoComboBox(){
         ordenacaoComboBox.getItems().addAll(OrdenationCriteria.values());
@@ -82,12 +85,19 @@ public class ResultadosController implements Initializable {
     }
 
     public void handleBuscar()  {
-        BuscaLinear blinear = new BuscaLinear(algorithm.getFinishedList().toArray(new PCB[0]));
-        PCB pcb = blinear.findByPID(Long.parseLong(campoBuscaPid.getText()));
-        if(pcb!= null){
-            processList.clear();
-            processList.add(pcb);
-        } else HelloApplication.showAlert("Erro", "Nenhum resultado encontrado", Alert.AlertType.ERROR);
+        try {
+            long pid = Long.parseLong(campoBuscaPid.getText());
+            BuscaLinear blinear = new BuscaLinear(algorithm.getFinishedList().toArray(new PCB[0]));
+            PCB pcb = blinear.findByPID(pid);
+
+            if (pcb != null) {
+                processList.setAll(pcb);
+            } else {
+                HelloApplication.showAlert("Erro", "Nenhum resultado encontrado", Alert.AlertType.ERROR);
+            }
+        } catch (NumberFormatException e) {
+            HelloApplication.showAlert("Erro", "PID inválido. Digite apenas números.", Alert.AlertType.ERROR);
+        }
     }
 
     public void handleResetarTabela(ActionEvent event) {

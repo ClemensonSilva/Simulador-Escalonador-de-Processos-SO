@@ -33,7 +33,12 @@
 
             </children>
         </HBox>
+        <HBox>
+            <children>
+                <Label fx:id="averageWaitingLabel"  style="-fx-font-weight: bold;"/>
 
+            </children>
+        </HBox>
         <fx:include fx:id="tabela" source="tabela-processos.fxml" VBox.vgrow="ALWAYS" />
 
     </children>

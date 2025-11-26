@@ -88,7 +88,7 @@ public class SimuladorController implements Initializable {
         } else {
             simulationTimeline.play();
             startButton.setText("Pause");
-            statusSimulacaoLabel.setText(" " + algoritm.getFinishedList().size() + "  e " + sizeListProcess);
+            statusSimulacaoLabel.setText("Status simulação: RUNNING");
             isRunning = true;
         }
     }
