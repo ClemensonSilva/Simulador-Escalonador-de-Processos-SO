@@ -91,6 +91,7 @@ public class ResultadosController implements Initializable {
     }
 
     public void handleResetarTabela(ActionEvent event) {
+        processList.clear();
         setProcessList();
     }
 }

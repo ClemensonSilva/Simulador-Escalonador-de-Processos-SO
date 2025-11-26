@@ -3,6 +3,7 @@ package com.example.processSimulator.controller;
 import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
 import com.example.processSimulator.model.schedulersAlg.IScheduler;
+import com.example.processSimulator.model.schedulersAlg.PriorityScheduling;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.TranslateTransition;
@@ -114,6 +115,10 @@ public class SimuladorController implements Initializable {
                 Node pcbNode = createProcessVisualNode(p);
                 processVisualNodes.put(p.getPid(), pcbNode);
                 readyQueueContainer.getChildren().add(pcbNode);
+
+                if (algoritm instanceof PriorityScheduling) {
+                    preemptingPriority();
+                }
             }
         }
 
@@ -198,6 +203,35 @@ public class SimuladorController implements Initializable {
         transition.play();
     }
 
+    private void animateToReadyQueue(PCB process) {
+        Node processNode = processVisualNodes.get(process.getPid());
+        if (processNode == null) return;
+
+        runningProcessContainer.getChildren().remove(processNode);
+        rootPane.getChildren().add(processNode);
+
+        double targetX = readyQueueContainer.getLayoutX();
+        double targetY = readyQueueContainer.getLayoutY();
+
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), processNode);
+
+        transition.setToX(targetX - processNode.getLayoutX());
+        transition.setToY(targetY - processNode.getLayoutY());
+
+        transition.setOnFinished(e -> {
+            rootPane.getChildren().remove(processNode);
+            readyQueueContainer.getChildren().add(processNode);
+
+            // Reseta transformações para que o HBox gerencie o posicionamento
+            processNode.setTranslateX(0);
+            processNode.setTranslateY(0);
+            processNode.setLayoutX(0);
+            processNode.setLayoutY(0);
+        });
+
+        transition.play();
+    }
+
     private void animateToFinishQueue(PCB process) {
         Node processNode = processVisualNodes.get(process.getPid());
         if (processNode == null) return;
@@ -252,6 +286,19 @@ public class SimuladorController implements Initializable {
 
     public void setListaDeProcessos(ObservableList<PCB> listaDeProcessos) {
         this.listaDeProcessos = listaDeProcessos;
+    }
+
+    private void preemptingPriority(){
+        PriorityScheduling ps = (PriorityScheduling) algoritm;
+
+        if (ps.getRunningProcess() != null && ps.needsPreempting()) {
+
+            PCB preempted = ps.preemptRunningProcess();
+
+            if (preempted != null) {
+                animateToReadyQueue(preempted);
+            }
+        }
     }
 
 }

@@ -28,8 +28,27 @@ public class PriorityScheduling implements IScheduler {
     public PCB nextPCB() {
         if(priorityReadyQueue.isEmpty()) throw new FilaVaziaException();;
         setRunningProcess(priorityReadyQueue.remove());
-        this.runningProcess.setStatus(StatusProcess.READY);
+        this.runningProcess.setStatus(StatusProcess.RUNNING);
         return  getRunningProcess();
+    }
+
+    public boolean needsPreempting(){
+        if(runningProcess == null || priorityReadyQueue.isEmpty()) return false;
+
+        PCB headOfReady = priorityReadyQueue.peek();
+
+        return headOfReady.compareTo(runningProcess) < 0;
+    }
+
+    public PCB preemptRunningProcess() {
+        if (runningProcess == null) return null;
+
+        PCB preempted = runningProcess;
+        preempted.setStatus(StatusProcess.READY);
+        priorityReadyQueue.add(preempted);
+        this.runningProcess = null;
+
+        return preempted;
     }
 
     @Override
