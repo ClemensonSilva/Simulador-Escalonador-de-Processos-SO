@@ -43,6 +43,8 @@ public class PCB implements Comparable<PCB> {
         this.burstTime = burstTime;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
+        this.remaingTime = burstTime;
+
     }
 
 

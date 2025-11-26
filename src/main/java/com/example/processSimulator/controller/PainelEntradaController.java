@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
@@ -34,6 +35,7 @@ public class PainelEntradaController {
 
     @FXML
     private TextField pidTextField;
+    @FXML private HBox priorityHBox;
 
     @FXML
     private Button adicionarButton;
@@ -56,13 +58,14 @@ public class PainelEntradaController {
 
     @FXML
     private void initialize() {
-
         setComboBox();
         if (tabelaController != null){
             tabelaController.getProcessosTable().setEditable(true);
             tabelaController.setProcessos(processList);
             tabelaController.getProcessosTable().setPlaceholder(new Label("Nenhum processo criado!"));
         }
+        priorityHBox.setVisible(false);
+        priorityHBox.setManaged(false);
 
     }
 
@@ -76,6 +79,7 @@ public class PainelEntradaController {
 
         String arrivalTime = arrivalTimeTextField.getText();
         String tempoExecucao = execucaoTextField.getText();
+
         if(!arrivalTime.isBlank() || !tempoExecucao.isBlank()) {
             pid += 1;
             PCB pcb = new PCB(pid, Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime));
@@ -91,6 +95,10 @@ public class PainelEntradaController {
     }
 
     public void handleEscolhaAlgoritmo(ActionEvent event){
+            boolean instanceOf = algoritmoComboBox.getValue() instanceof PriorityScheduling;
+
+            priorityHBox.setManaged(instanceOf);
+            priorityHBox.setVisible(instanceOf);
          showAlert("Mudanca","ALGORITMO MODIFICADO PARA " + algoritmoComboBox.getValue(), Alert.AlertType.INFORMATION);
     }
 
@@ -146,8 +154,12 @@ public class PainelEntradaController {
                         .map(dados -> {
                             long burstTime = Long.parseLong(dados[0].trim());
                             long arrivalTime = Long.parseLong(dados[1].trim());
+                            long priority = 0;
+                            if(dados.length == 3){
+                                 priority = Long.parseLong(dados[2].trim());
+                            }
                             this.pid++;
-                            return new PCB(this.pid, burstTime, arrivalTime);
+                            return new PCB(this.pid, burstTime, arrivalTime, priority);
                         })
                         .collect(Collectors.toList());
                 processList.addAll(novosProcessos);

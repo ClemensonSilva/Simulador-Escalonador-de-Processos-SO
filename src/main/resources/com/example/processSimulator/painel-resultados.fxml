@@ -29,8 +29,15 @@
 
 
                 <Button text="Tela Incial" onAction="#handleRetornarInicio" styleClass="btn-info" />
+                <Button text="Resetar Tabela" onAction="#handleResetarTabela" styleClass="btn-info" />
+
             </children>
         </HBox>
+    <HBox>
+        <children>
+            <TextField fx:id="averageTimeTextField" promptText="Ex: 1" prefWidth="100" />
+        </children>
+    </HBox>
 
         <fx:include fx:id="tabela" source="tabela-processos.fxml" VBox.vgrow="ALWAYS" />
 

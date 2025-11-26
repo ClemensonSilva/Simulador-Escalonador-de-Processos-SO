@@ -25,8 +25,8 @@
                     </children>
                 </HBox>
 
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <children>
+                <HBox alignment="CENTER_LEFT" spacing="10" fx:id="priorityHBox" >
+                    <children >
                         <Label minWidth="120" text="Prioridade:" />
                         <TextField fx:id="prioridadeTextField" promptText="Ex: 1 (opcional)" styleClass="form-control" />
                     </children>

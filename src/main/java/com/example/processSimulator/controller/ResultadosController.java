@@ -28,6 +28,7 @@ public class ResultadosController implements Initializable {
     private TabelaController tabelaController;
     @FXML private ComboBox<OrdenationCriteria> ordenacaoComboBox;
     @FXML private TextField campoBuscaPid;
+    @FXML private TextField averageTimeTextField;
 
     private ObservableList<PCB> processList = FXCollections.observableArrayList();
     private IScheduler algorithm;
@@ -50,7 +51,15 @@ public class ResultadosController implements Initializable {
     public void setResultsController(IScheduler algorithm) {
         this.algorithm = algorithm;
         this.setProcessList();
+
     }
+    public void setAverageTimeTextField() {
+        long average = 0;
+        for (PCB processo : algorithm.getFinishedList()) {
+
+        }
+    }
+
     public void setProcessList(){
         for (PCB  processo: algorithm.getFinishedList()){
             processList.add(processo);
@@ -79,5 +88,9 @@ public class ResultadosController implements Initializable {
             processList.clear();
             processList.add(pcb);
         } else HelloApplication.showAlert("Erro", "Nenhum resultado encontrado", Alert.AlertType.ERROR);
+    }
+
+    public void handleResetarTabela(ActionEvent event) {
+        setProcessList();
     }
 }
