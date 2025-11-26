@@ -37,6 +37,12 @@
                         <TextField fx:id="arrivalTimeTextField" promptText="Ex: 0 " styleClass="form-control" />
                     </children>
                 </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10" fx:id="quantumHbox">
+                    <children>
+                        <Label minWidth="120" text="Quantum:" />
+                        <TextField fx:id="quantumTextField" promptText="Ex: 3 " styleClass="form-control" />
+                    </children>
+                </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>

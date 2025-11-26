@@ -4,6 +4,7 @@ import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
 import com.example.processSimulator.model.schedulersAlg.IScheduler;
 import com.example.processSimulator.model.schedulersAlg.PriorityScheduling;
+import com.example.processSimulator.model.schedulersAlg.RoundRobin;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.TranslateTransition;
@@ -108,7 +109,6 @@ public class SimuladorController implements Initializable {
     private void runSingleTick() throws IOException {
         PCB runningProcess;
         this.isRunning = true;
-        // cria lista Node  do Ready container
         for (PCB p : this.listaDeProcessos) {
             if (p.getArrivalTime() == this.clock) {
                 this.algoritm.addProcess(p);
@@ -119,6 +119,14 @@ public class SimuladorController implements Initializable {
                 if (algoritm instanceof PriorityScheduling) {
                     preemptingPriority();
                 }
+
+            }
+        }
+        if (algoritm instanceof RoundRobin) {
+            preemptingRobin();
+            if (algoritm.getRunningProcess() != null) {
+                long currentQ = algoritm.getRunningProcess().getQuantum();
+                algoritm.getRunningProcess().setQuantum(currentQ - 1);
             }
         }
 
@@ -164,6 +172,8 @@ public class SimuladorController implements Initializable {
         clock++;
         clockLabel.setText(String.valueOf(clock));
     }
+
+
 
     private boolean isSimulationFinished() {
         return algoritm.getFinishedList().size() == sizeListProcess;
@@ -294,6 +304,18 @@ public class SimuladorController implements Initializable {
         if (ps.getRunningProcess() != null && ps.needsPreempting()) {
 
             PCB preempted = ps.preemptRunningProcess();
+
+            if (preempted != null) {
+                animateToReadyQueue(preempted);
+            }
+        }
+    }
+
+    private void preemptingRobin() {
+        RoundRobin rb = (RoundRobin) algoritm;
+        if (rb.getRunningProcess() != null && rb.needsPreempting()) {
+
+            PCB preempted = rb.preemptRunningProcess();
 
             if (preempted != null) {
                 animateToReadyQueue(preempted);

@@ -23,9 +23,12 @@ public class PCB implements Comparable<PCB> {
     private long remaingTime;
     private long turnAround;
     private long priority;
+    private  long quantum;
+    private final long quantumConst ;
 
     public PCB(long pid, long burstTime, long arrivalTime) {
         this.pid = pid;
+        this.quantumConst = quantum;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.remaingTime = burstTime;
@@ -34,19 +37,35 @@ public class PCB implements Comparable<PCB> {
         this.turnAround = 0;
         this.priority = 0;
         this.arrivalTime = arrivalTime;
+        this.quantum = 0;
     }
 
 
-    public PCB(long pid, long burstTime,  long arrivalTime, long priority ) {
+    public PCB(long pid, long burstTime, long arrivalTime, long priority) {
         this.pid = pid;
+        this.quantumConst = quantum;
         this.status = StatusProcess.NEW;
         this.burstTime = burstTime;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
         this.remaingTime = burstTime;
-
+        this.quantum = 0;
     }
 
+    public PCB(long pid, long burstTime, long arrivalTime, long quantum, long priority) {
+        this.pid = pid;
+        this.quantumConst = quantum;
+        this.status = StatusProcess.NEW;
+        this.burstTime = burstTime;
+        this.remaingTime = burstTime;
+        this.waitingTime = 0;
+        this.completionTime = 0;
+        this.turnAround = 0;
+        this.priority = 0;
+        this.arrivalTime = arrivalTime;
+        this.priority = 0;
+        this.quantum = quantum;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -142,6 +161,10 @@ public class PCB implements Comparable<PCB> {
         return turnAround;
     }
 
+    public long getQuantumConst() {
+        return quantumConst;
+    }
+
     /**
      * The time spended in the queue with the ready state
      * @return
@@ -166,6 +189,14 @@ public class PCB implements Comparable<PCB> {
     @Override
     public int compareTo(PCB o) {
         return Long.compare(this.priority, o.priority);
+    }
+
+    public long getQuantum() {
+        return quantum;
+    }
+
+    public void setQuantum(long quantum) {
+        this.quantum = quantum;
     }
 }
 

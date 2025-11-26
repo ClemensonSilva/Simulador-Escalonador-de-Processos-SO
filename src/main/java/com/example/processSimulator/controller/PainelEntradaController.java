@@ -1,10 +1,7 @@
 package com.example.processSimulator.controller;
 import com.example.processSimulator.HelloApplication;
 import com.example.processSimulator.model.PCB;
-import com.example.processSimulator.model.schedulersAlg.FCFS;
-import com.example.processSimulator.model.schedulersAlg.IScheduler;
-import com.example.processSimulator.model.schedulersAlg.PriorityScheduling;
-import com.example.processSimulator.model.schedulersAlg.SJF;
+import com.example.processSimulator.model.schedulersAlg.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -36,6 +33,8 @@ public class PainelEntradaController {
     @FXML
     private TextField pidTextField;
     @FXML private HBox priorityHBox;
+    @FXML private  HBox quantumHbox;
+    @FXML private TextField quantumTextField;
 
     @FXML
     private Button adicionarButton;
@@ -66,12 +65,14 @@ public class PainelEntradaController {
         }
         priorityHBox.setVisible(false);
         priorityHBox.setManaged(false);
+        quantumHbox.setVisible(false);
+        quantumHbox.setManaged(false);
 
     }
 
     @FXML
     private  void setComboBox(){
-        algoritmoComboBox.getItems().addAll(new FCFS(), new PriorityScheduling(), new SJF());
+        algoritmoComboBox.getItems().addAll(new FCFS(),new SJF(), new PriorityScheduling(), new RoundRobin());
     }
     private int pid = 0; // TODO melhoria: retirar essa linha daqui
     @FXML
@@ -79,10 +80,16 @@ public class PainelEntradaController {
 
         String arrivalTime = arrivalTimeTextField.getText();
         String tempoExecucao = execucaoTextField.getText();
+        // TODO refatorar, DRY
+
+        String quantum = "0";
+        if(algoritmoComboBox.getValue() instanceof RoundRobin) {
+             quantum = quantumTextField.getText();
+        }
 
         if(!arrivalTime.isBlank() || !tempoExecucao.isBlank()) {
             pid += 1;
-            PCB pcb = new PCB(pid, Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime));
+            PCB pcb = new PCB(pid, Long.parseLong(tempoExecucao), Long.parseLong(arrivalTime), Long.parseLong(quantum), 0);
 
             processList.add(pcb);
 
@@ -99,6 +106,10 @@ public class PainelEntradaController {
 
             priorityHBox.setManaged(instanceOf);
             priorityHBox.setVisible(instanceOf);
+
+            instanceOf = algoritmoComboBox.getValue() instanceof  RoundRobin;
+            quantumHbox.setManaged(instanceOf);
+            quantumHbox.setVisible(instanceOf);
          showAlert("Mudanca","ALGORITMO MODIFICADO PARA " + algoritmoComboBox.getValue(), Alert.AlertType.INFORMATION);
     }
 
@@ -146,6 +157,15 @@ public class PainelEntradaController {
         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
 
+        // TODO refatorar, DRY
+        String quantum;
+
+        if(algoritmoComboBox.getValue() instanceof RoundRobin) {
+            quantum = quantumTextField.getText();
+        } else {
+            quantum = "0";
+        }
+
         if (file != null) {
             try {
                 List<PCB> novosProcessos;
@@ -159,7 +179,7 @@ public class PainelEntradaController {
                                  priority = Long.parseLong(dados[2].trim());
                             }
                             this.pid++;
-                            return new PCB(this.pid, burstTime, arrivalTime, priority);
+                            return new PCB(this.pid, burstTime, arrivalTime, Long.parseLong(quantum),priority);
                         })
                         .collect(Collectors.toList());
                 processList.addAll(novosProcessos);
